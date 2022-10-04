@@ -123,7 +123,7 @@ Scrapy模板生成器，该项目集成了常用中间件，避免重复造轮�
 
 ### run.py
 
-在`tasks`数组中添加爬虫的`name`，调度器填写运行的定时器，可以批量运行爬虫
+在`tasks_list`数组中添加爬虫的`name`，调度器填写运行的定时器，可以批量运行爬虫
 
 
 
@@ -231,9 +231,8 @@ Scrapy模板生成器，该项目集成了常用中间件，避免重复造轮�
     * JA3伪装
 
       > ```python
-    > DOWNLOADER_CLIENTCONTEXTFACTORY = 'anti_useragent.utils.scrapy_contextfactory.Ja3ScrapyClientContextFactory'
-    > ```
-
+      > DOWNLOADER_CLIENTCONTEXTFACTORY = 'anti_useragent.utils.scrapy_contextfactory.Ja3ScrapyClientContextFactory'
+    
 * Asyncio 支持
 
   > **必须开启**
