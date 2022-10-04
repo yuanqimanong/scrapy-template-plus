@@ -1,0 +1,68 @@
+import os
+import sys
+
+sys.path.append(os.path.abspath(r'../..'))
+
+from datetime import datetime
+
+from dateutil.tz import tz
+from scrapy import Request
+from scrapy.crawler import CrawlerProcess
+from scrapy.linkextractors import LinkExtractor
+from scrapy.spiders import CrawlSpider
+from scrapy.utils.project import get_project_settings
+
+from $project_name.components.utils import CommonUtil
+from $project_name.components.utils.parser import ResponseParser
+from $project_name.items import ${ProjectName}ItemLoader
+
+
+# from datetime import datetime, timedelta
+# from dateutil.tz import tz
+# from scrapy.linkextractors import LinkExtractor
+# from $project_name.components.middlewares.aiohttpcrawl import AiohttpRequest
+# from $project_name.components.middlewares.seleniumcrawl import SeleniumRequest
+
+# class $classname(RedisSpider):
+class $classname(CrawlSpider):
+    name = '$name'
+    # allowed_domains = ['$domain']
+
+    start_urls = [
+        'http://books.toscrape.com/catalogue/page-【1-5:1】.html',
+    ]
+
+    def start_requests(self):
+        urls = CommonUtil.turn_page(self.start_urls)
+        for url in urls:
+            yield Request(url=url, callback=self.parse)
+
+    def parse(self, response, **kwargs):
+        links = LinkExtractor(allow=(r'catalogue/[^/]+/index.html',), deny=(), restrict_xpaths=()).extract_links(
+            response)
+        for link in links:
+            yield Request(url=link.url, callback=self.parse_item)
+
+    # start_urls = [
+    #     'http://books.toscrape.com/catalogue/page-1.html',
+    # ]
+    #
+    # rules = (
+    #     Rule(LinkExtractor(allow=(r'catalogue/page-\d+.html',), deny=(), restrict_xpaths=()), follow=True),
+    #     Rule(LinkExtractor(allow=(r'catalogue/[^/]+/index.html',), deny=(), restrict_xpaths=()), callback='parse_item',
+    #          follow=False),
+    # )
+
+    def parse_item(self, response, **kwargs):
+        create_time = datetime.now(tz=tz.gettz('Asia/Shanghai'))
+        update_time = datetime.now(tz=tz.gettz('Asia/Shanghai'))
+        return ${ProjectName}ItemLoader().parse_item(ResponseParser(response),
+                                                     create_time=create_time,
+                                                     update_time=update_time)
+
+
+if __name__ == '__main__':
+    settings = get_project_settings()
+    process = CrawlerProcess(settings)
+    process.crawl($classname)
+    process.start()

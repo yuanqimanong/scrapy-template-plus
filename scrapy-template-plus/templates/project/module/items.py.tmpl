@@ -1,0 +1,52 @@
+# See documentation in:
+# https://docs.scrapy.org/en/latest/topics/items.html
+
+import scrapy
+from itemloaders.processors import MapCompose
+from scrapy.loader import ItemLoader
+from scrapy.utils.request import request_fingerprint
+from w3lib.html import remove_tags
+
+from $project_name.components.utils.secure import SecureUtil
+
+
+class ${ProjectName}Item(scrapy.Item):
+    # 指纹，主键
+    id = scrapy.Field()
+    # 网址
+    urlname = scrapy.Field()
+    # 标题
+    title = scrapy.Field(input_processor=MapCompose(remove_tags), )
+    # 日期
+    create_time = scrapy.Field()
+    update_time = scrapy.Field()
+
+
+# See documentation in:
+# https://docs.scrapy.org/en/latest/topics/loaders.html
+class ${ProjectName}ItemLoader(ItemLoader):
+
+    @classmethod
+    def parse_item(cls, response, **kwargs):
+        item = ${ProjectName}Item()
+        item['id'] = SecureUtil.md5(request_fingerprint(response.request))
+        item['urlname'] = response.url
+        item['title'] = response.xpath('//h1/text()').get(default='')
+        item['create_time'] = kwargs['create_time']
+        item['update_time'] = kwargs['update_time']
+        return item
+
+        #####################
+        #  ItemLoader 写法  #
+        ####################
+
+        # item = ItemLoader(item=${ProjectName}Item(), response=response)
+        # # 默认输出首个结果
+        # item.default_output_processor = TakeFirst()
+        #
+        # item.add_value('id', SecureUtil.md5(request_fingerprint(response.request))))
+        # item.add_value('urlname', response.url)
+        # item.add_xpath('title', '//h1')
+        # item.add_value('create_time', kwargs['create_time'])
+        # item.add_value('update_time', kwargs['update_time'])
+        # return item.load_item()
