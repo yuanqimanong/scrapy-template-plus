@@ -256,5 +256,5 @@ Scrapy模板生成器，该项目集成了常用中间件，避免重复造轮�
 
 ## 爬虫样例
 
-详见另一个项目 👉 [scrapy_tplp_demos](scrapy_tplp_demos)
+详见另一个项目 👉 [scrapy_tplp_demos](https://github.com/yuanqimanong/scrapy_tplp_demos)
 
