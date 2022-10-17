@@ -154,7 +154,8 @@ DEFAULT_REQUEST_HEADERS = {
 '''
 【Ja3伪装】需关闭自动调频功能（AUTOTHROTTLE_ENABLED = False）
 '''
-DOWNLOADER_CLIENTCONTEXTFACTORY = 'anti_useragent.utils.scrapy_contextfactory.Ja3ScrapyClientContextFactory'
+# DOWNLOADER_CLIENTCONTEXTFACTORY = 'anti_useragent.utils.scrapy_contextfactory.Ja3ScrapyClientContextFactory'
+DOWNLOADER_CLIENTCONTEXTFACTORY = '$project_name.components.utils.j3spy.Ja3SpyClientContextFactory'
 
 ####################
 #     中间件       #
