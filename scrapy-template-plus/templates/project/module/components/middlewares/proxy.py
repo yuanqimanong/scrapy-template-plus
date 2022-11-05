@@ -21,7 +21,7 @@ class ProxyMiddleware:
 
     def process_request(self, request, spider):
         proxy = random.choice(list(self.ip_proxy_list))
-        if 'http' not in proxy:
+        if 'http://' not in proxy:
             request.meta['proxy'] = F'http://{proxy}'
         else:
             request.meta['proxy'] = proxy
